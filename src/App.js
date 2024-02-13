@@ -10,7 +10,14 @@ export default function App() {
         label: "(X, Y) Data",
         data: [],
         fill: false,
-        borderColor: "green",
+        backgroundColor: "rgba(255, 0, 0) ",
+        borderColor: "rgba(255, 0, 0) ",
+        pointBackgroundColor: "rgba(255, 0, 0) ",
+        pointBorderColor: "#fff",
+        pointBorderWidth: 1,
+        pointRadius: 3,
+        pointHoverRadius: 5,
+        borderWidth: 0,
       },
     ],
   });
@@ -39,16 +46,21 @@ export default function App() {
 
         setChartData((prevChartData) => ({
           ...prevChartData,
-          labels: combinedDataLimited.map((point) => point.x), // Assuming labels are provided from x-axis data
+          labels: combinedDataLimited.map((point) => point.x),
           datasets: [
             {
-              label: "(X, Y) Data",
-              data: combinedDataLimited.map((point) => ({
-                x: point.x,
-                y: point.y,
-              })),
+              label: "Dot Graph",
+              data: combinedDataLimited,
               fill: false,
-              borderColor: "green",
+
+              backgroundColor: "rgba(255, 0, 0) ",
+              borderColor: "rgba(255, 0, 0) ",
+              pointBackgroundColor: "rgba(255, 0, 0) ",
+              pointBorderColor: "#fff",
+              pointBorderWidth: 1,
+              pointRadius: 5,
+              pointHoverRadius: 7,
+              borderWidth: 0,
             },
           ],
         }));
@@ -64,8 +76,42 @@ export default function App() {
     <div className="App">
       <h2>Data in Line Chart</h2>
       <div style={{ height: "400px", width: "800px" }}>
-        {/* <canvas id="myChart"></canvas> */}
-        <Line data={chartData} />
+        <Line
+          data={chartData}
+          options={{
+            plugins: {
+              tooltip: {
+                enabled: true,
+                callbacks: {
+                  label: (context) => {
+                    const dataPoint = context.dataset.data[context.dataIndex];
+                    return `Dot Graph: (${dataPoint.x.toFixed(
+                      3
+                    )}, ${dataPoint.y.toFixed(3)})`;
+                  },
+                },
+              },
+            },
+            scales: {
+              x: {
+                type: "linear",
+                min: 0,
+                max: 1000,
+                ticks: {
+                  stepSize: 100,
+                },
+              },
+              y: {
+                type: "linear",
+                min: 0,
+                max: 1000,
+                ticks: {
+                  stepSize: 100,
+                },
+              },
+            },
+          }}
+        />
       </div>
     </div>
   );
